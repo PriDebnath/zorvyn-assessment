@@ -50,8 +50,8 @@ export default function Dashboard() {
 
   return (
     <div className="  flex flex-col">
-      <div className="flex justify-between">
-        <h1 className="p-2 bg-gray-200">Finance Dashboard</h1>
+      <div className="flex justify-between bg-gray-200 p-4">
+        <h1 className="">Finance Dashboard</h1>
         <Setting />
       </div>
       <div className="p-4 flex flex-col gap-4">

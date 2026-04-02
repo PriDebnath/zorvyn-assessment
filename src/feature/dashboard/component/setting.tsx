@@ -12,11 +12,12 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import React from "react"
+import {Settings} from "lucide-react"
 
  function SettingDialog() {
   return (
     <Dialog>
-      <DialogTrigger render={<Button variant="outline">Setting</Button>}>
+      <DialogTrigger render={<Button variant="outline"><Settings/></Button>}>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
