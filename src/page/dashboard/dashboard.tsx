@@ -1,6 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
-import SummaryCard from "@/feature/dashboard/component/summary-card";
-import { mockTransactions } from "@/feature/dashboard/mock-data";
+
 import {
   LineChart,
   Line,
@@ -13,9 +11,11 @@ import {
   Cell,
   Legend,
 } from "recharts";
-import type { Transactions } from "@/model";
-import ExportTransaction from "@/feature/dashboard/component/export-transaction";
+import React, { useEffect, useMemo, useState } from "react";
+import { useTransactionStore, type Transaction } from "@/store/transaction.store";
 import Setting from "@/feature/dashboard/component/setting/setting";
+import SummaryCard from "@/feature/dashboard/component/summary-card";
+import ExportTransaction from "@/feature/dashboard/component/export-transaction";
 
 const COLORS = ["#8884d8", "#82ca9d", "#ffc658", "#ff7f7f"];
 
@@ -26,18 +26,19 @@ export default function Dashboard() {
   const balance = income - expense;
 
   const [role, setRole] = useState("admin");
+  const { transactions } = useTransactionStore()
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("all");
 
   const filteredTx = useMemo(() => {
-    return mockTransactions
+    return transactions
       .filter((tx) => filter === "all" || tx.type === filter)
       .filter((tx) => tx.category.toLowerCase().includes(search.toLowerCase()));
   }, [search, filter]);
 
 
   // Line chart data (group by date)
-  const trendData = mockTransactions.map((t) => {
+  const trendData = transactions.map((t) => {
     return {
       date: t.date.slice(5),
       amount: t.type === "expense" ? -t.amount : t.amount,
@@ -46,7 +47,7 @@ export default function Dashboard() {
 
 
   // Pie chart data (category breakdown)
-  const expenseTransactions = mockTransactions.filter((t) => t.type === "expense")
+  const expenseTransactions = transactions.filter((t) => t.type === "expense")
 
   return (
     <div className="  flex flex-col">
@@ -80,8 +81,8 @@ export default function Dashboard() {
               <PieChart>
                 <Pie
                   data={expenseTransactions}
-                  dataKey={"amount" satisfies keyof Transactions}
-                  nameKey={"category" satisfies keyof Transactions}
+                  dataKey={"amount" satisfies keyof Transaction}
+                  nameKey={"category" satisfies keyof Transaction}
                   outerRadius={80}
                   label
                 >
