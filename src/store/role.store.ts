@@ -2,7 +2,7 @@
 import { createStore, create, } from "zustand"
 import { persist } from "zustand/middleware"
 
-const roles = ["viewer", "admin"] as const
+export const roles = ["viewer", "admin"] as const
 
 type Role =  typeof roles[number]
 
@@ -13,7 +13,7 @@ type Store = {
 
 const store = create<Store>()
 
-const useRoleStore = store(
+export const useRoleStore = store(
     persist(
         (set) => ({
             role: "admin",
@@ -23,5 +23,3 @@ const useRoleStore = store(
             name: "role"
         })
 )
-
-export {useRoleStore}
