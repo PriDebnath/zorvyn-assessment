@@ -15,7 +15,7 @@ import {
 } from "recharts";
 import type { Transactions } from "@/model";
 import ExportTransaction from "@/feature/dashboard/component/export-transaction";
-import Setting from "@/feature/dashboard/component/setting";
+import Setting from "@/feature/dashboard/component/setting/setting";
 
 const COLORS = ["#8884d8", "#82ca9d", "#ffc658", "#ff7f7f"];
 
