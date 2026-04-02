@@ -14,6 +14,7 @@ import {
   Legend,
 } from "recharts";
 import type { Transactions } from "@/model";
+import ExportTransaction from "@/feature/dashboard/component/export-transaction";
 
 const COLORS = ["#8884d8", "#82ca9d", "#ffc658", "#ff7f7f"];
 
@@ -115,11 +116,15 @@ export default function Dashboard() {
               onChange={(e) => setSearch(e.target.value)}
             />
           </div>
-          {role === "admin" && (
+          <div className="flex items-center">
+<ExportTransaction/>
+   {role === "admin" && (
             <button className="bg-black text-white px-4 py-2 rounded">
               + Add Transaction
             </button>
           )}
+          </div>
+       
         </div>
 
         <div className="border rounded overflow-hidden">
