@@ -17,6 +17,7 @@ import { Field, FieldGroup } from "@/components/ui/field"
 import type { Transaction } from "@/store/transaction.store"
 import SelectTransaction from "./select-transaction"
 import { mockTransactions } from "../../mock-data"
+import DatePicker from "./date-picker"
 
 const typeAllList = mockTransactions?.map((t) => t.type)
 const typeList = [...new Set(typeAllList),]
@@ -24,16 +25,12 @@ const typeList = [...new Set(typeAllList),]
 interface Props {
 
 }
-//    id: number;
-//     date: string;
-//     category: string;
-//     type: string;
-//     amount: number;
+
 function AddTransaction(props: Props) {
     const defaultValues: Transaction = {
         category: "food",
         amount: 100,
-        date: '00',
+        date: new Date(),
         id: new Date().getTime(),
         type: "income"
     }
@@ -134,13 +131,20 @@ function AddTransaction(props: Props) {
                                     <Label htmlFor={field.name} className="capitalize">
                                         {field.name}
                                     </Label>
-                                    <Input
+                                    <DatePicker
+                                      id={field.name}
+                                        date={field.state.value}
+                                        onDateChange={(value) => {
+                                            field.handleChange(value as Transaction['date'])
+                                        }}
+                                    />
+                                    {/* <Input
                                         id={field.name}
                                         name={field.name}
                                         value={field.state.value}
                                         onBlur={field.handleBlur}
                                         onChange={(e) => field.handleChange(e.target.value)}
-                                    />
+                                    /> */}
                                     {field.state.meta.errors.length > 0 && (
                                         <div className="text-red-500 text-sm">
                                             {field.state.meta.errors[0]}

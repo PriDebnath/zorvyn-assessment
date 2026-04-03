@@ -28,7 +28,7 @@ function SelectTransaction(props: Props) {
                 onFilterChange(value!)
             }}
         >
-            <SelectTrigger className="w-full max-w-48">
+            <SelectTrigger className="w-full ">
                 <SelectValue placeholder="Choose a role" />
             </SelectTrigger>
             <SelectContent>

@@ -36,7 +36,7 @@ export default function Dashboard() {
   // Line chart data (group by date)
   const trendData = transactions.map((t) => {
     return {
-      date: t.date.slice(5),
+      date: t?.date?.toLocaleDateString()?? "today",
       amount: t.type === "expense" ? -t.amount : t.amount,
     }
   });

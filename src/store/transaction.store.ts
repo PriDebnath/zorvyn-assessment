@@ -5,7 +5,7 @@ import { mockTransactions } from "@/feature/dashboard/mock-data";
 
 export type Transaction = {
     id: number;
-    date: string;
+    date: Date;
     category: string;
     type: "expense" | "income";
     amount: number;

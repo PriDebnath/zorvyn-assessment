@@ -25,7 +25,7 @@ function SelectRole(props: Props) {
                 setTheme(value!)
             }}
         >
-            <SelectTrigger className="w-full max-w-48">
+            <SelectTrigger className="w-full ">
                 <SelectValue placeholder="Choose a theme" />
             </SelectTrigger>
             <SelectContent>
