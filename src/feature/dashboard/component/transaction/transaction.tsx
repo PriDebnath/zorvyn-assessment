@@ -10,7 +10,7 @@ import {
 import React, { useMemo, useState } from "react"
 import { roles, useRoleStore } from "@/store/role.store"
 import { mockTransactions } from "../../mock-data";
-import { useTransactionStore } from "@/store/transaction.store";
+import { useTransactionStore, type Transaction } from "@/store/transaction.store";
 import SelectTransaction from "./select-transaction";
 import { Input } from "@/components/ui/input";
 import ExportTransaction from "../export-transaction";
@@ -21,11 +21,12 @@ const typeAllList = mockTransactions?.map((t) => t.type)
 const typeList = [...new Set(typeAllList), "all"]
 
 interface Props {
+    transactions: Transaction[];
 }
 
 function TransactionComponent(props: Props) {
     const { role } = useRoleStore();
-    const { transactions } = useTransactionStore()
+    const { transactions } = props
     const [search, setSearch] = useState("");
     const [filter, setFilter] = useState("all");
 
@@ -33,7 +34,7 @@ function TransactionComponent(props: Props) {
         return transactions
             .filter((tx) => filter === "all" || tx.type === filter)
             .filter((tx) => tx.category.toLowerCase().includes(search.toLowerCase()));
-    }, [search, filter]);
+    }, [search, filter, transactions]);
 
     return (
         <div className="space-y-4" id="Transaction">
@@ -59,7 +60,7 @@ function TransactionComponent(props: Props) {
                 <div className="flex items-center gap-2">
                     <ExportTransaction />
                     {role === "admin" && (
-                        <AddTransaction/>
+                        <AddTransaction />
                     )}
                 </div>
 
@@ -83,7 +84,7 @@ function TransactionComponent(props: Props) {
                         </thead>
                         <tbody>
                             {filteredTx.map((tx) => (
-                                <tr key={tx.id} className="text-center border-t">
+                                <tr key={"tx" + tx.id} className="text-center border-t">
                                     {/* <td className="p-2">{tx.date?.toDateString()}</td> */}
                                     <td className="p-2">{tx.category}</td>
                                     <td className="p-2">{tx.type}</td>

@@ -34,12 +34,14 @@ export default function Dashboard() {
 
 
   // Line chart data (group by date)
-  const trendData = transactions.map((t) => {
-    return {
-      date: t?.date?.toLocaleDateString()?? "today",
-      amount: t.type === "expense" ? -t.amount : t.amount,
-    }
-  });
+  // const trendData = transactions.map((t) => {
+  //   return {
+  //     date: t.date,
+  //     // new Date(typeof t?.date != 'string' ? t?.date?.toLocaleDateString() : "").toLocaleDateString(),
+  //     amount: t.type === "expense" ? -t.amount : t.amount,
+  //   }
+  // });
+// console.log({transactions,trendData});
 
 
   // Pie chart data (category breakdown)
@@ -62,7 +64,7 @@ export default function Dashboard() {
           <div className="p-4 border rounded h-64">
             <h3 className="mb-2 font-semibold">Balance Trend</h3>
             <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={trendData}>
+              <LineChart data={transactions}>
                 <XAxis dataKey="date" />
                 <YAxis />
                 <Tooltip />
@@ -94,7 +96,7 @@ export default function Dashboard() {
 
         </div>
 
-<TransactionComponent/>
+<TransactionComponent transactions={transactions}/>
      
 
       </div>

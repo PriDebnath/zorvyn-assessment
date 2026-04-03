@@ -8,13 +8,13 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
-import React from "react"
+import React, { useState } from "react"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useForm } from "@tanstack/react-form"
 import { Button } from "@/components/ui/button"
 import { Field, FieldGroup } from "@/components/ui/field"
-import type { Transaction } from "@/store/transaction.store"
+import { useTransactionStore, type Transaction } from "@/store/transaction.store"
 import SelectTransaction from "./select-transaction"
 import { mockTransactions } from "../../mock-data"
 import DatePicker from "./date-picker"
@@ -27,8 +27,10 @@ interface Props {
 }
 
 function AddTransaction(props: Props) {
+    const [open,setOpen] = useState(false)
+    const {createTransaction } = useTransactionStore()
     const defaultValues: Transaction = {
-        category: "food",
+        category: "",
         amount: 100,
         date: new Date(),
         id: new Date().getTime(),
@@ -42,18 +44,31 @@ function AddTransaction(props: Props) {
                     fields: {
                         type: (value.type != 'expense') && (value.type != 'income')
                             ? 'Type should be expense or expense' : undefined,
+                                category:
+          !value.category ? "Category is required" : undefined,
+  
                     },
+
                 }
             },
 
         },
-        onSubmit: async ({ value }) => {
-            // Do something with form data
+        onSubmit: async (submitData) => {
+            const {value} = submitData
+        
+            
             console.log(value)
+            createTransaction(value)
+                tanstackForm.reset({
+      ...defaultValues,
+      id: new Date().getTime(),
+    })
+            setOpen(false)
+
         },
     })
     return (
-        <Dialog>
+        <Dialog open={open} onOpenChange={setOpen}> 
             <DialogTrigger render={<Button> Add Transaction</Button>} />
             <DialogContent className="sm:max-w-sm">
                 <DialogHeader>
@@ -73,7 +88,6 @@ function AddTransaction(props: Props) {
                     <tanstackForm.Field
                         name="type"
                         children={(field) => {
-                            // Avoid hasty abstractions. Render props are great!
                             return (
                                 <div className="flex  flex-col  gap-2">
                                     <Label htmlFor={field.name} className="capitalize">
@@ -100,7 +114,6 @@ function AddTransaction(props: Props) {
                     <tanstackForm.Field
                         name="category"
                         children={(field) => {
-                            // Avoid hasty abstractions. Render props are great!
                             return (
                                 <div className="flex flex-col gap-2">
                                     <Label htmlFor={field.name} className="capitalize">
@@ -125,7 +138,6 @@ function AddTransaction(props: Props) {
                     <tanstackForm.Field
                         name="date"
                         children={(field) => {
-                            // Avoid hasty abstractions. Render props are great!
                             return (
                                 <div className="flex flex-col gap-2">
                                     <Label htmlFor={field.name} className="capitalize">
@@ -138,13 +150,6 @@ function AddTransaction(props: Props) {
                                             field.handleChange(value as Transaction['date'])
                                         }}
                                     />
-                                    {/* <Input
-                                        id={field.name}
-                                        name={field.name}
-                                        value={field.state.value}
-                                        onBlur={field.handleBlur}
-                                        onChange={(e) => field.handleChange(e.target.value)}
-                                    /> */}
                                     {field.state.meta.errors.length > 0 && (
                                         <div className="text-red-500 text-sm">
                                             {field.state.meta.errors[0]}
@@ -157,7 +162,6 @@ function AddTransaction(props: Props) {
                     <tanstackForm.Field
                         name="amount"
                         children={(field) => {
-                            // Avoid hasty abstractions. Render props are great!
                             return (
                                 <div className="flex flex-col gap-2">
                                     <Label htmlFor={field.name} className="capitalize">
@@ -165,6 +169,7 @@ function AddTransaction(props: Props) {
                                     </Label>
                                     <Input
                                         id={field.name}
+                                        type="number"
                                         name={field.name}
                                         value={field.state.value}
                                         onBlur={field.handleBlur}

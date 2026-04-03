@@ -28,7 +28,7 @@ export const useTransactionStore = store(
                 set((currentState) => {
                     const transactions = [...currentState.transactions]
                     return {
-                        transactions: [transaction, ...transactions]
+                        transactions: [ ...transactions,transaction,]
                     }
                 })
             },
