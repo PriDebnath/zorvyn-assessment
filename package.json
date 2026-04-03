@@ -27,6 +27,7 @@
     "@rolldown/plugin-babel": "^0.2.1",
     "@tailwindcss/vite": "^4.1.18",
     "@tanstack/history": "^1.145.7",
+    "@tanstack/react-form": "^1.28.6",
     "@tanstack/react-query": "^5.90.17",
     "@tanstack/react-router": "^1.150.0",
     "@tanstack/router-plugin": "^1.149.3",
