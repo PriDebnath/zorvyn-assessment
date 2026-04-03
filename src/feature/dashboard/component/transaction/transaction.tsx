@@ -13,7 +13,7 @@ import { mockTransactions } from "../../mock-data";
 import { useTransactionStore, type Transaction } from "@/store/transaction.store";
 import SelectTransaction from "./select-transaction";
 import { Input } from "@/components/ui/input";
-import ExportTransaction from "../export-transaction";
+import ExportTransaction from "./export-transaction";
 import { Button } from "@/components/ui/button";
 import AddTransaction from "./add-transaction";
 
@@ -85,7 +85,7 @@ function TransactionComponent(props: Props) {
                         <tbody>
                             {filteredTx.map((tx) => (
                                 <tr key={"tx" + tx.id} className="text-center border-t">
-                                    <td className="p-2">{tx.date?.toDateString()}</td>
+                                    {/* <td className="p-2">{tx.date?.toDateString()}</td> */}
                                     <td className="p-2">{tx.category}</td>
                                     <td className="p-2">{tx.type}</td>
                                     <td className="p-2">
