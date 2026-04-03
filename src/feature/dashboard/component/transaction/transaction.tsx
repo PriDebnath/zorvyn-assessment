@@ -37,8 +37,7 @@ function TransactionComponent(props: Props) {
     }, [search, filter, transactions]);
 
     return (
-        <div className="space-y-4" id="Transaction">
-            <h2 className="text-xl font-semibold">Transactions</h2>
+        <>
             <div className="flex justify-between">
                 <div className="flex gap-2 items-center">
                     <SelectTransaction
@@ -83,29 +82,31 @@ function TransactionComponent(props: Props) {
                             </tr>
                         </thead>
                         <tbody>
-                            {filteredTx.map((tx) => (
-                                <tr key={"tx" + tx.id} className="text-center border-t">
-                                    {/* <td className="p-2">{tx.date?.toDateString()}</td> */}
-                                    <td className="p-2">{tx.category}</td>
-                                    <td className="p-2">{tx.type}</td>
-                                    <td className="p-2">
-                                        {tx.type === "expense" ? "-" : "+"}₹{tx.amount}
-                                    </td>
-                                    {role === "admin" && (
-                                        <td className="p-2 space-x-2">
-                                            <button className="text-blue-500">Edit</button>
-                                            <button className="text-red-500">Delete</button>
+                            {filteredTx.map((tx) => {
+                                console.log(tx);
+                                let date = new Date(tx.date)
+                                return (
+                                    <tr key={"tx" + tx.id} className="text-center border-t">
+                                        <td className="p-2">{date?.toDateString()}</td>
+                                        <td className="p-2">{tx.category}</td>
+                                        <td className="p-2">{tx.type}</td>
+                                        <td className="p-2">
+                                            {tx.type === "expense" ? "-" : "+"}₹{tx.amount}
                                         </td>
-                                    )}
-                                </tr>
-                            ))}
+                                        {role === "admin" && (
+                                            <td className="p-2 space-x-2">
+                                                <button className="text-blue-500">Edit</button>
+                                                <button className="text-red-500">Delete</button>
+                                            </td>
+                                        )}
+                                    </tr>
+                                )
+                            })}
                         </tbody>
                     </table>
                 )}
             </div>
-
-
-        </div>
+        </>
     )
 }
 
