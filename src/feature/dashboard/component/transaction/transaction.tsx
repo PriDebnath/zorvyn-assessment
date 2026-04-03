@@ -85,7 +85,7 @@ function TransactionComponent(props: Props) {
                         <tbody>
                             {filteredTx.map((tx) => (
                                 <tr key={"tx" + tx.id} className="text-center border-t">
-                                    {/* <td className="p-2">{tx.date?.toDateString()}</td> */}
+                                    <td className="p-2">{tx.date?.toDateString()}</td>
                                     <td className="p-2">{tx.category}</td>
                                     <td className="p-2">{tx.type}</td>
                                     <td className="p-2">

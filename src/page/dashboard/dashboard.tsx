@@ -12,26 +12,39 @@ import {
   Legend,
 } from "recharts";
 import React, { useEffect, useMemo, useState } from "react";
-import { useTransactionStore, type Transaction } from "@/store/transaction.store";
 import Setting from "@/feature/dashboard/component/setting/setting";
 import SummaryCard from "@/feature/dashboard/component/summary-card";
-import ExportTransaction from "@/feature/dashboard/component/export-transaction";
-import SelectTransaction from "@/feature/dashboard/component/transaction/select-transaction"
-import { useRoleStore } from "@/store/role.store";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { useTransactionStore, type Transaction } from "@/store/transaction.store";
 import TransactionComponent from "@/feature/dashboard/component/transaction/transaction";
 
 const COLORS = ["#8884d8", "#82ca9d", "#ffc658", "#ff7f7f"];
 
 export default function Dashboard() {
-
-  const income = 900
-  const expense = 400
-  const balance = income - expense;
-
   const { transactions } = useTransactionStore()
 
+  const income = useMemo(
+    () => {
+      return transactions
+        .filter((pri) => pri.type == "income")
+        .map((pri) => pri.amount)
+        .reduce((pri, current) => {
+          const newValue = pri + current
+          return newValue
+        }, 0)
+    }, [transactions])
+
+  const expense = useMemo(
+    () => {
+      return transactions
+        .filter((pri) => pri.type == "expense")
+        .map((pri) => pri.amount)
+        .reduce((pri, current) => {
+          const newValue = pri + current
+          return newValue
+        }, 0)
+    }, [transactions])
+
+  const balance = income - expense;
 
   // Line chart data (group by date)
   // const trendData = transactions.map((t) => {
@@ -41,7 +54,7 @@ export default function Dashboard() {
   //     amount: t.type === "expense" ? -t.amount : t.amount,
   //   }
   // });
-// console.log({transactions,trendData});
+  console.log({transactions,});
 
 
   // Pie chart data (category breakdown)
@@ -61,7 +74,7 @@ export default function Dashboard() {
         </div>
 
         <div className="grid md:grid-cols-2 gap-4">
-          <div className="p-4 border rounded h-64">
+          <div className="p-4 border rounded h-72">
             <h3 className="mb-2 font-semibold">Balance Trend</h3>
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={transactions}>
@@ -73,7 +86,7 @@ export default function Dashboard() {
             </ResponsiveContainer>
           </div>
 
-          <div className="p-4 border rounded h-64">
+          <div className="py-8 px-4 pt-4 border rounded h-72">
             <h3 className="mb-2 font-semibold">Spending Breakdown</h3>
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
@@ -96,8 +109,8 @@ export default function Dashboard() {
 
         </div>
 
-<TransactionComponent transactions={transactions}/>
-     
+        <TransactionComponent transactions={transactions} />
+
 
       </div>
 
