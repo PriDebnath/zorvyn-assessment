@@ -14,6 +14,7 @@ import { Label } from "@/components/ui/label"
 import { useForm } from "@tanstack/react-form"
 import { Button } from "@/components/ui/button"
 import { Field, FieldGroup } from "@/components/ui/field"
+import type { Transaction } from "@/store/transaction.store"
 
 interface Props {
 
@@ -24,9 +25,25 @@ interface Props {
 //     type: string;
 //     amount: number;
 function AddTransaction(props: Props) {
+    const defaultValues: Transaction = {
+        category: "food",
+        amount: 100,
+        date: '00',
+        id: new Date().getTime(),
+        type: "income"
+    }
     const tanstackForm = useForm({
-        defaultValues: {
-            category: ""
+        defaultValues: defaultValues,
+        validators: {
+            onChange: ({ value }) => {
+                return {
+                    fields: {
+                        type: (value.type != 'expense') && (value.type != 'income')
+                            ? 'Type should be expense or expense' : undefined,
+                    },
+                }
+            },
+
         },
         onSubmit: async ({ value }) => {
             // Do something with form data
@@ -43,32 +60,45 @@ function AddTransaction(props: Props) {
                         Enter transaction details below.
                     </DialogDescription>
                 </DialogHeader>
-                <form onSubmit={(e) => {
-                    e.preventDefault()
-                    e.stopPropagation()
-                    tanstackForm.handleSubmit()
-                }} >
+                <form
+                    className="grid gap-4"
+                    onSubmit={(e) => {
+                        e.preventDefault()
+                        e.stopPropagation()
+                        tanstackForm.handleSubmit()
+                    }} >
+
                     <tanstackForm.Field
-                        name="category"
-                        validators={{
-                            onChange: ({ value }) =>
-                                !value
-                                    ? 'A first name is required'
-                                    : value.length < 3
-                                        ? 'First name must be at least 3 characters'
-                                        : undefined,
-                            onChangeAsyncDebounceMs: 500,
-                            onChangeAsync: async ({ value }) => {
-                                await new Promise((resolve) => setTimeout(resolve, 1000))
-                                return (
-                                    value.includes('error') && 'No "error" allowed in first name'
-                                )
-                            },
-                        }}
+                        name="type"
                         children={(field) => {
                             // Avoid hasty abstractions. Render props are great!
                             return (
-                                <div className="flex items-center gap-2">
+                                <div className="flex  flex-col  gap-2">
+                                    <Label htmlFor={field.name} className="capitalize">
+                                        {field.name}
+                                    </Label>
+                                    <Input
+                                        id={field.name}
+                                        name={field.name}
+                                        value={field.state.value}
+                                        onBlur={field.handleBlur}
+                                        onChange={(e) => field.handleChange(e.target.value as Transaction['type'])}
+                                    />
+                                    {field.state.meta.errors.length > 0 && (
+                                        <div className="text-red-500 text-sm">
+                                            {field.state.meta.errors[0]}
+                                        </div>
+                                    )}
+                                </div>
+                            )
+                        }}
+                    />
+                    <tanstackForm.Field
+                        name="category"
+                        children={(field) => {
+                            // Avoid hasty abstractions. Render props are great!
+                            return (
+                                <div className="flex flex-col gap-2">
                                     <Label htmlFor={field.name} className="capitalize">
                                         {field.name}
                                     </Label>
@@ -79,16 +109,19 @@ function AddTransaction(props: Props) {
                                         onBlur={field.handleBlur}
                                         onChange={(e) => field.handleChange(e.target.value)}
                                     />
-                                    {/* <FieldInfo field={field} /> */}
-                                </div>
+                                    {field.state.meta.errors.length > 0 && (
+                                        <div className="text-red-500 text-sm">
+                                            {field.state.meta.errors[0]}
+                                        </div>
+                                    )}                                </div>
                             )
                         }}
                     />
+                    <DialogFooter>
+                        <DialogClose render={<Button variant="outline">Cancel</Button>} />
+                        <Button type="submit">Save changes</Button>
+                    </DialogFooter>
                 </form>
-                <DialogFooter>
-                    <DialogClose render={<Button variant="outline">Cancel</Button>} />
-                    <Button type="submit">Save changes</Button>
-                </DialogFooter>
             </DialogContent>
         </Dialog>
     )
