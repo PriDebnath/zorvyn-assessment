@@ -16,6 +16,10 @@ import { useTransactionStore, type Transaction } from "@/store/transaction.store
 import Setting from "@/feature/dashboard/component/setting/setting";
 import SummaryCard from "@/feature/dashboard/component/summary-card";
 import ExportTransaction from "@/feature/dashboard/component/export-transaction";
+import SelectTransaction from "@/feature/dashboard/component/transaction/select-transaction"
+import { useRoleStore } from "@/store/role.store";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 const COLORS = ["#8884d8", "#82ca9d", "#ffc658", "#ff7f7f"];
 
@@ -25,7 +29,7 @@ export default function Dashboard() {
   const expense = 400
   const balance = income - expense;
 
-  const [role, setRole] = useState("admin");
+  const { role } = useRoleStore();
   const { transactions } = useTransactionStore()
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("all");
@@ -50,12 +54,12 @@ export default function Dashboard() {
   const expenseTransactions = transactions.filter((t) => t.type === "expense")
 
   return (
-    <div className="  flex flex-col">
-      <div className="flex justify-between bg-gray-200 p-4">
+    <div className="  flex flex-col bg-gray-50">
+      <div className="flex justify-between bg-gray-200 p-2 sticky top-0 shadow-lg">
         <h1 className="">Finance Dashboard</h1>
         <Setting />
       </div>
-      <div className="p-4 flex flex-col gap-4">
+      <div className="p-4 flex flex-col gap-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <SummaryCard title="Total Balance" value={balance} />
           <SummaryCard title="Income" value={income} />
@@ -103,30 +107,29 @@ export default function Dashboard() {
         <div className="space-y-4">
           <h2 className="text-xl font-semibold">Transactions</h2>
           <div className="flex justify-between">
-            <div className="flex gap-2 flex-wrap">
-              <select
-                className="border p-2 rounded"
-                value={filter}
-                onChange={(e) => setFilter(e.target.value)}
-              >
-                <option value="all">All</option>
-                <option value="income">Income</option>
-                <option value="expense">Expense</option>
-              </select>
+            <div className="flex gap-2 items-center">
+              <SelectTransaction
+                id="select-filter"
+                filter={filter}
+                onFilterChange={(value) => {
+                  setFilter(value)
+                }}
+              />
 
-              <input
+              <Input
                 placeholder="Search category..."
-                className="border p-2 rounded"
+                className="border p-2 min-w-64"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />
             </div>
-            <div className="flex items-center">
+            <div className="flex items-center gap-2">
               <ExportTransaction />
               {role === "admin" && (
-                <button className="bg-black text-white px-4 py-2 rounded">
-                  + Add Transaction
-                </button>
+                <Button >Add Transaction</Button>
+                // <button className="bg-black text-white px-4 py-2 rounded">
+                //   + 
+                // </button>
               )}
             </div>
 

@@ -9,20 +9,25 @@ import {
 } from "@/components/ui/select"
 import React from "react"
 import { roles, useRoleStore } from "@/store/role.store"
+import { mockTransactions } from "../../mock-data";
+
+const typeAllList = mockTransactions?.map((t) => t.type)
+const typeList = [...new Set(typeAllList), "all"]
 
 interface Props {
-    id: string
+    id: string;
+    filter: string
+    onFilterChange: (filter: string) => void
 }
 
-function SelectRole(props: Props) {
-    const { id } = props
-    const { role, setRole } = useRoleStore()
+function SelectTransaction(props: Props) {
+    const { id, filter, onFilterChange } = props
     return (
         <Select
             id={id}
-            value={role}
+            value={filter}
             onValueChange={(value) => {
-                setRole(value!)
+                onFilterChange(value!)
             }}
         >
             <SelectTrigger className="w-full max-w-48">
@@ -30,16 +35,16 @@ function SelectRole(props: Props) {
             </SelectTrigger>
             <SelectContent>
                 <SelectGroup >
-                    <SelectLabel>Role</SelectLabel>
+                    {/* <SelectLabel>Role</SelectLabel> */}
                     {
-                        roles?.map((role) => {
+                        typeList?.map((type) => {
                             return (
                                 <SelectItem
-                                    key={role}
-                                    value={role}
+                                    key={type}
+                                    value={type}
                                     className={'capitalize'}
                                 >
-                                    {role}
+                                    {type}
                                 </SelectItem>
                             )
                         })
@@ -50,4 +55,4 @@ function SelectRole(props: Props) {
     )
 }
 
-export default React.memo(SelectRole)
+export default React.memo(SelectTransaction)

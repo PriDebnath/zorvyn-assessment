@@ -14,16 +14,16 @@ interface Props {
     id: string
 }
 
-export function SelectRole(props: Props) {
+function SelectRole(props: Props) {
     const { id } = props
     const { theme, setTheme } = useThemeStore()
     return (
         <Select
             id={id}
             value={theme}
-            onValueChange={(value) => { 
+            onValueChange={(value) => {
                 setTheme(value!)
-             }}
+            }}
         >
             <SelectTrigger className="w-full max-w-48">
                 <SelectValue placeholder="Choose a theme" />
