@@ -15,6 +15,7 @@ import SelectTransaction from "./select-transaction";
 import { Input } from "@/components/ui/input";
 import ExportTransaction from "../export-transaction";
 import { Button } from "@/components/ui/button";
+import AddTransaction from "./add-transaction";
 
 interface Props {
 }
@@ -54,7 +55,7 @@ function TransactionComponent(props: Props) {
                 <div className="flex items-center gap-2">
                     <ExportTransaction />
                     {role === "admin" && (
-                        <Button >Add Transaction</Button>
+                        <AddTransaction/>
                     )}
                 </div>
 
