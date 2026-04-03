@@ -15,6 +15,11 @@ import { useForm } from "@tanstack/react-form"
 import { Button } from "@/components/ui/button"
 import { Field, FieldGroup } from "@/components/ui/field"
 import type { Transaction } from "@/store/transaction.store"
+import SelectTransaction from "./select-transaction"
+import { mockTransactions } from "../../mock-data"
+
+const typeAllList = mockTransactions?.map((t) => t.type)
+const typeList = [...new Set(typeAllList),]
 
 interface Props {
 
@@ -77,13 +82,15 @@ function AddTransaction(props: Props) {
                                     <Label htmlFor={field.name} className="capitalize">
                                         {field.name}
                                     </Label>
-                                    <Input
+                                    <SelectTransaction
+                                    typeList={typeList}
                                         id={field.name}
-                                        name={field.name}
-                                        value={field.state.value}
-                                        onBlur={field.handleBlur}
-                                        onChange={(e) => field.handleChange(e.target.value as Transaction['type'])}
+                                        filter={field.state.value}
+                                        onFilterChange={(value) => {
+                                            field.handleChange(value as Transaction['type'])
+                                        }}
                                     />
+
                                     {field.state.meta.errors.length > 0 && (
                                         <div className="text-red-500 text-sm">
                                             {field.state.meta.errors[0]}
@@ -114,6 +121,57 @@ function AddTransaction(props: Props) {
                                             {field.state.meta.errors[0]}
                                         </div>
                                     )}                                </div>
+                            )
+                        }}
+                    />
+
+                    <tanstackForm.Field
+                        name="date"
+                        children={(field) => {
+                            // Avoid hasty abstractions. Render props are great!
+                            return (
+                                <div className="flex flex-col gap-2">
+                                    <Label htmlFor={field.name} className="capitalize">
+                                        {field.name}
+                                    </Label>
+                                    <Input
+                                        id={field.name}
+                                        name={field.name}
+                                        value={field.state.value}
+                                        onBlur={field.handleBlur}
+                                        onChange={(e) => field.handleChange(e.target.value)}
+                                    />
+                                    {field.state.meta.errors.length > 0 && (
+                                        <div className="text-red-500 text-sm">
+                                            {field.state.meta.errors[0]}
+                                        </div>
+                                    )}                                </div>
+                            )
+                        }}
+                    />
+
+                    <tanstackForm.Field
+                        name="amount"
+                        children={(field) => {
+                            // Avoid hasty abstractions. Render props are great!
+                            return (
+                                <div className="flex flex-col gap-2">
+                                    <Label htmlFor={field.name} className="capitalize">
+                                        {field.name}
+                                    </Label>
+                                    <Input
+                                        id={field.name}
+                                        name={field.name}
+                                        value={field.state.value}
+                                        onBlur={field.handleBlur}
+                                        onChange={(e) => field.handleChange(Number(e.target.value))}
+                                    />
+                                    {field.state.meta.errors.length > 0 && (
+                                        <div className="text-red-500 text-sm">
+                                            {field.state.meta.errors[0]}
+                                        </div>
+                                    )}
+                                </div>
                             )
                         }}
                     />

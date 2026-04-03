@@ -17,6 +17,9 @@ import ExportTransaction from "../export-transaction";
 import { Button } from "@/components/ui/button";
 import AddTransaction from "./add-transaction";
 
+const typeAllList = mockTransactions?.map((t) => t.type)
+const typeList = [...new Set(typeAllList), "all"]
+
 interface Props {
 }
 
@@ -39,6 +42,7 @@ function TransactionComponent(props: Props) {
                 <div className="flex gap-2 items-center">
                     <SelectTransaction
                         id="select-filter"
+                        typeList={typeList}
                         filter={filter}
                         onFilterChange={(value) => {
                             setFilter(value)

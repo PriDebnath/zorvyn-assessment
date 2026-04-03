@@ -11,17 +11,15 @@ import React from "react"
 import { roles, useRoleStore } from "@/store/role.store"
 import { mockTransactions } from "../../mock-data";
 
-const typeAllList = mockTransactions?.map((t) => t.type)
-const typeList = [...new Set(typeAllList), "all"]
-
 interface Props {
     id: string;
-    filter: string
+    typeList: string[];
+    filter: string;
     onFilterChange: (filter: string) => void
 }
 
 function SelectTransaction(props: Props) {
-    const { id, filter, onFilterChange } = props
+    const { id, filter, onFilterChange, typeList } = props
     return (
         <Select
             id={id}
