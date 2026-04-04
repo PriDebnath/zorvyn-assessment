@@ -16,6 +16,26 @@ This project is a Finance Dashboard UI built as part of the Zorvyn Frontend Deve
 <img height="480" src="public/image/dashboard-overview-dark.png" />
 </a>
 
+#### 🔴 Transactions (Light Mode)
+<a href="https://pridebnath.github.io/zorvyn-assessment/">
+<img height="480" src="public/image/dashboard-transactions-light.png" />
+</a>
+
+#### 🔴 Transactions (Dark Mode)
+<a href="https://pridebnath.github.io/zorvyn-assessment/">
+<img height="480" src="public/image/dashboard-transactions-dark.png" />
+</a>
+
+#### 🔴 Insights (Light Mode)
+<a href="https://pridebnath.github.io/zorvyn-assessment/">
+<img height="480" src="public/image/dashboard-insights-light.png" />
+</a>
+
+#### 🔴 Insights (Dark Mode)
+<a href="https://pridebnath.github.io/zorvyn-assessment/">
+<img height="480" src="public/image/dashboard-insights-dark.png" />
+</a>
+
  
 
 
