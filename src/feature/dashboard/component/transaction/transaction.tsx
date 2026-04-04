@@ -15,7 +15,8 @@ import SelectTransaction from "./select-transaction";
 import { Input } from "@/components/ui/input";
 import ExportTransaction from "./export-transaction";
 import { Button } from "@/components/ui/button";
-import AddTransaction from "./add-transaction";
+import AddEditTransaction from "./add-edit-transaction";
+import { PenIcon, Trash2Icon } from "lucide-react";
 
 const typeAllList = mockTransactions?.map((t) => t.type)
 const typeList = [...new Set(typeAllList), "all"]
@@ -25,16 +26,33 @@ interface Props {
 }
 
 function TransactionComponent(props: Props) {
-    const { role } = useRoleStore();
     const { transactions } = props
+    const { role } = useRoleStore();
     const [search, setSearch] = useState("");
     const [filter, setFilter] = useState("all");
+    const [openForm, setOpenForm] = useState(false)
+    const { deleteTransaction } = useTransactionStore()
+    const [editTransaction, setEditTransaction] = useState<Transaction | undefined>(undefined);
 
     const filteredTx = useMemo(() => {
         return transactions
             .filter((tx) => filter === "all" || tx.type === filter)
             .filter((tx) => tx.category.toLowerCase().includes(search.toLowerCase()));
-    }, [search, filter, transactions]);
+    }, [search, filter, transactions])
+
+    const handleAdd = () => {
+        setEditTransaction(undefined)
+        setOpenForm(true)
+    }
+
+    const handleEdit = (transaction: Transaction) => {
+        setEditTransaction(transaction!)
+        setOpenForm(true)
+    }
+
+    const handleDelete = (transaction: Transaction) => {
+        deleteTransaction(transaction)
+    }
 
     return (
         <>
@@ -59,7 +77,11 @@ function TransactionComponent(props: Props) {
                 <div className="flex items-center gap-2">
                     <ExportTransaction />
                     {role === "admin" && (
-                        <AddTransaction />
+                    <Button
+    onClick={()=>handleAdd()}
+>
+    Add Transaction
+</Button>
                     )}
                 </div>
 
@@ -95,8 +117,21 @@ function TransactionComponent(props: Props) {
                                         </td>
                                         {role === "admin" && (
                                             <td className="p-2 space-x-2">
-                                                <button className="text-blue-500">Edit</button>
-                                                <button className="text-red-500">Delete</button>
+                                                <Button
+    variant="outline"
+    onClick={() => {
+        setEditTransaction(tx)
+        setOpenForm(true)
+    }}
+>
+    <PenIcon />
+</Button>
+                                                <Button
+                                                    variant={'outline'}
+                                                    className="text-red-500"
+                                                    onClick={() => handleDelete(tx)}
+                                                ><Trash2Icon />
+                                                </Button>
                                             </td>
                                         )}
                                     </tr>
@@ -106,6 +141,14 @@ function TransactionComponent(props: Props) {
                     </table>
                 )}
             </div>
+
+
+            <AddEditTransaction
+    key={editTransaction?.id ?? "new-tx"} //
+    transaction={editTransaction}
+    open={openForm}
+    setOpen={setOpenForm}
+/>
         </>
     )
 }

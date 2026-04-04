@@ -8,7 +8,7 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useForm } from "@tanstack/react-form"
@@ -18,17 +18,22 @@ import { useTransactionStore, type Transaction } from "@/store/transaction.store
 import SelectTransaction from "./select-transaction"
 import { mockTransactions } from "../../mock-data"
 import DatePicker from "./date-picker"
+import { PenIcon } from "lucide-react"
 
 const typeAllList = mockTransactions?.map((t) => t.type)
 const typeList = [...new Set(typeAllList),]
 
 interface Props {
-
+    transaction?: Transaction;
+    open: boolean;
+    setOpen: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-function AddTransaction(props: Props) {
-    const [open,setOpen] = useState(false)
-    const {createTransaction } = useTransactionStore()
+function AddEditTransaction(props: Props) {
+    const { transaction, open, setOpen } = props
+    const { createTransaction, updateTransaction } = useTransactionStore()
+    console.log({transaction});
+    
     const defaultValues: Transaction = {
         category: "",
         amount: 100,
@@ -37,16 +42,15 @@ function AddTransaction(props: Props) {
         type: "income"
     }
     const tanstackForm = useForm({
-        defaultValues: defaultValues,
+        defaultValues: transaction ? transaction : defaultValues,
         validators: {
             onChange: ({ value }) => {
                 return {
                     fields: {
                         type: (value.type != 'expense') && (value.type != 'income')
                             ? 'Type should be expense or expense' : undefined,
-                                category:
-          !value.category ? "Category is required" : undefined,
-  
+                        category:
+                            !value.category ? "Category is required" : undefined,
                     },
 
                 }
@@ -54,25 +58,26 @@ function AddTransaction(props: Props) {
 
         },
         onSubmit: async (submitData) => {
-            const {value} = submitData
-        
-            
+            const { value } = submitData
             console.log(value)
-            createTransaction(value)
-                tanstackForm.reset({
-      ...defaultValues,
-      id: new Date().getTime(),
-    })
+            if (transaction) {
+                updateTransaction(value)
+            } else {
+                createTransaction(value)
+            }
             setOpen(false)
-
+            tanstackForm.reset({
+                ...defaultValues,
+                id: new Date().getTime(),
+            })
         },
     })
+
     return (
-        <Dialog open={open} onOpenChange={setOpen}> 
-            <DialogTrigger render={<Button> Add Transaction</Button>} />
+        <Dialog open={open} onOpenChange={setOpen}>
             <DialogContent className="sm:max-w-sm">
                 <DialogHeader>
-                    <DialogTitle>Add Transaction</DialogTitle>
+                    <DialogTitle> {transaction ? "Update" : "Add"} Transaction</DialogTitle>
                     <DialogDescription>
                         Enter transaction details below.
                     </DialogDescription>
@@ -94,7 +99,7 @@ function AddTransaction(props: Props) {
                                         {field.name}
                                     </Label>
                                     <SelectTransaction
-                                    typeList={typeList}
+                                        typeList={typeList}
                                         id={field.name}
                                         filter={field.state.value}
                                         onFilterChange={(value) => {
@@ -144,7 +149,7 @@ function AddTransaction(props: Props) {
                                         {field.name}
                                     </Label>
                                     <DatePicker
-                                      id={field.name}
+                                        id={field.name}
                                         date={field.state.value}
                                         onDateChange={(value) => {
                                             field.handleChange(value as Transaction['date'])
@@ -194,4 +199,4 @@ function AddTransaction(props: Props) {
     )
 }
 
-export default React.memo(AddTransaction)
+export default React.memo(AddEditTransaction)

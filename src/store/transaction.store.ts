@@ -35,8 +35,14 @@ export const useTransactionStore = store(
             updateTransaction: (transaction: Transaction) => {
                 set((currentState) => {
                     const transactions = [...currentState.transactions]
+                    const newTransactions = transactions.map((t)=>{
+                        if (t.id == transaction.id){
+                            return transaction
+                        }
+                        return t
+                    })
                     return {
-                        transactions: [transaction, ...transactions]
+                        transactions: [ ...newTransactions]
                     }
                 })
             },
