@@ -6,7 +6,6 @@ interface Props {
 }
 
 function InsightsComponent({ transactions }: Props) {
-  // 1️⃣ Highest Spending Category
   const highestCategory = useMemo(() => {
     const totals: Record<string, number> = {};
 
@@ -24,7 +23,7 @@ function InsightsComponent({ transactions }: Props) {
     return { category, amount };
   }, [transactions]);
 
-  // 2️⃣ Monthly Comparison (income vs expense per month)
+  // Monthly Comparison (income vs expense)
   const monthlyComparison = useMemo(() => {
     const data: Record<string, { income: number; expense: number }> = {};
 
@@ -44,7 +43,6 @@ function InsightsComponent({ transactions }: Props) {
     return data;
   }, [transactions]);
 
-  // 3️⃣ Simple Observation
   const observation = useMemo(() => {
     const income = transactions
       .filter((t) => t.type === "income")

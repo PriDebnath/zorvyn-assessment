@@ -8,17 +8,16 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog"
-import React, { useEffect, useState } from "react"
+import DatePicker from "./date-picker"
+import { PenIcon } from "lucide-react"
+import React, { useEffect,  } from "react"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useForm } from "@tanstack/react-form"
 import { Button } from "@/components/ui/button"
-import { Field, FieldGroup } from "@/components/ui/field"
-import { useTransactionStore, type Transaction } from "@/store/transaction.store"
-import SelectTransaction from "./select-transaction"
 import { mockTransactions } from "../../mock-data"
-import DatePicker from "./date-picker"
-import { PenIcon } from "lucide-react"
+import SelectTransaction from "./select-transaction"
+import { useTransactionStore, type Transaction } from "@/store/transaction.store"
 
 const typeAllList = mockTransactions?.map((t) => t.type)
 const typeList = [...new Set(typeAllList),]

@@ -1,8 +1,5 @@
-"use client"
-
-import * as React from "react"
+import React from "react"
 import { format } from "date-fns"
-
 import { Button } from "@/components/ui/button"
 import { Calendar } from "@/components/ui/calendar"
 import { Field, FieldLabel } from "@/components/ui/field"
@@ -24,7 +21,6 @@ interface Props {
 
     return (
         <Field className="">
-            {/* <FieldLabel htmlFor="date-picker-simple">Date</FieldLabel> */}
             <Popover>
                 <PopoverTrigger render={<Button
                     variant="outline"

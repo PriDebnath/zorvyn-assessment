@@ -1,6 +1,6 @@
 import React from "react";
 import { useTransactionStore } from "@/store/transaction.store";
-import SummaryComponent from "@/feature/dashboard/summary/summary";
+import SummaryComponent from "@/feature/dashboard/component/summary/summary";
 import Setting from "@/feature/dashboard/component/setting/setting";
 import InsightsComponent from "@/feature/dashboard/component/insights/insights";
 import TransactionComponent from "@/feature/dashboard/component/transaction/transaction";

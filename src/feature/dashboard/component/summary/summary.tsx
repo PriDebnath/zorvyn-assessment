@@ -34,9 +34,9 @@ function SummaryComponent(props: Props) {
     const balance = income - expense;
     return (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <SummaryCard title="Total Balance" value={balance} />
-            <SummaryCard title="Income" value={income} />
-            <SummaryCard title="Expenses" value={expense} />
+            <SummaryCard id="total-bcalance-counter" title="Total Balance"   value={balance} />
+            <SummaryCard id="income-counter" title="Income" value={income} />
+            <SummaryCard id="expenses-counter" title="Expenses" value={expense} />
         </div>
     )
 }
