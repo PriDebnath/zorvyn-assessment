@@ -1,22 +1,17 @@
 import {
-    CreditCardIcon,
     FileBracesIcon,
     FileCodeIcon,
-    LogOutIcon,
-    SettingsIcon,
-    UserIcon,
 } from "lucide-react"
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
-    DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import React from "react"
 import { Button } from "@/components/ui/button"
 import { useTransactionStore, type Transaction } from "@/store/transaction.store"
- 
+
 function downloadFile(content: string, fileName: string, type: string) {
   const blob = new Blob([content], { type })
   const url = URL.createObjectURL(blob)
@@ -28,14 +23,16 @@ function downloadFile(content: string, fileName: string, type: string) {
 }
 
 function convertToCSV(data: Transaction[]) {
-    const firstItem = data[0]
-    const firstItemKeys = Object.keys(firstItem)
-    const headers = firstItemKeys.join(",")
+    if (!data.length) return ""
 
-    const dataValues = data.map(obj => {
-        return Object.values(obj)
-    })
-    const rows = dataValues.join(",")
+    const headers = Object.keys(data[0]).join(",")
+
+    const rows = data.map(obj =>
+        Object.values(obj)
+            .map(value => `"${String(value)}"`) // handles commas safely
+            .join(",")
+    )
+
     return [headers, ...rows].join("\n")
 }
 
@@ -47,18 +44,24 @@ function ExportTransactionDropdown() {
         downloadFile(csv, "transactions.csv", "text/csv")
     }
 
+    const handleExportJSON = () => {
+        const json = JSON.stringify(transactions, null, 2)
+        downloadFile(json, "transactions.json", "application/json")
+    }
+
     return (
         <DropdownMenu>
-            {/* <DropdownMenuTrigger asChild> */}
-            <DropdownMenuTrigger render={<Button variant="outline">Export</Button>}>
+            <DropdownMenuTrigger render={ <Button variant="outline">Export</Button>}>
             </DropdownMenuTrigger>
+
             <DropdownMenuContent>
                 <DropdownMenuItem onClick={handleExportCSV}>
-                    <FileCodeIcon />
+                    <FileCodeIcon className="mr-2 h-4 w-4" />
                     CSV
                 </DropdownMenuItem>
-                <DropdownMenuItem>
-                    <FileBracesIcon />
+
+                <DropdownMenuItem onClick={handleExportJSON}>
+                    <FileBracesIcon className="mr-2 h-4 w-4" />
                     JSON
                 </DropdownMenuItem>
             </DropdownMenuContent>
