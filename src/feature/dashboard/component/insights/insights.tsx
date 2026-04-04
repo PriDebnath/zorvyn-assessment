@@ -59,9 +59,7 @@ function InsightsComponent({ transactions }: Props) {
   }, [transactions]);
 
   return (
-    <div className="bg-white shadow rounded-2xl p-4 space-y-3">
-      <h2 className="text-lg font-semibold">Insights</h2>
-
+ <>
       {/* Highest Spending Category */}
       <p>
         <strong>Highest Spending Category:</strong>{" "}
@@ -73,9 +71,10 @@ function InsightsComponent({ transactions }: Props) {
         <strong>Monthly Comparison:</strong>
         <ul className="ml-5 list-disc">
           {Object.entries(monthlyComparison).map(([month, val]) => (
-            <li key={month}>
-              {month}: Income ₹{val.income} | Expense ₹{val.expense}
-            </li>
+            <p key={month} 
+            className="bg-gray-100  hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 rounded p-2 m-1">
+             • {month}: Income ₹{val.income} | Expense ₹{val.expense}
+            </p>
           ))}
         </ul>
       </div>
@@ -84,7 +83,7 @@ function InsightsComponent({ transactions }: Props) {
       <p>
         <strong>Observation:</strong> {observation}
       </p>
-    </div>
+    </>
   );
 }
 

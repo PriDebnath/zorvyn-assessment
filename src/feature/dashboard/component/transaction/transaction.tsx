@@ -56,7 +56,7 @@ function TransactionComponent(props: Props) {
 
     return (
         <>
-            <div className="flex justify-between">
+            <div className="flex  flex-wrap gap-2 justify-between">
                 <div className="flex gap-2 items-center">
                     <SelectTransaction
                         id="select-filter"
@@ -74,14 +74,14 @@ function TransactionComponent(props: Props) {
                         onChange={(e) => setSearch(e.target.value)}
                     />
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 flex-wrap" >
                     <ExportTransaction />
                     {role === "admin" && (
-                    <Button
-    onClick={()=>handleAdd()}
->
-    Add Transaction
-</Button>
+                        <Button
+                            onClick={() => handleAdd()}
+                        >
+                            Add Transaction
+                        </Button>
                     )}
                 </div>
 
@@ -94,7 +94,7 @@ function TransactionComponent(props: Props) {
                     </div>
                 ) : (
                     <table className="w-full text-sm">
-                        <thead className="bg-gray-100">
+                        <thead className="bg-gray-100 dark:bg-gray-700">
                             <tr>
                                 <th className="p-2">Date</th>
                                 <th className="p-2">Category</th>
@@ -118,14 +118,14 @@ function TransactionComponent(props: Props) {
                                         {role === "admin" && (
                                             <td className="p-2 space-x-2">
                                                 <Button
-    variant="outline"
-    onClick={() => {
-        setEditTransaction(tx)
-        setOpenForm(true)
-    }}
->
-    <PenIcon />
-</Button>
+                                                    variant="outline"
+                                                    onClick={() => {
+                                                        setEditTransaction(tx)
+                                                        setOpenForm(true)
+                                                    }}
+                                                >
+                                                    <PenIcon />
+                                                </Button>
                                                 <Button
                                                     variant={'outline'}
                                                     className="text-red-500"
@@ -144,11 +144,11 @@ function TransactionComponent(props: Props) {
 
 
             <AddEditTransaction
-    key={editTransaction?.id ?? "new-tx"} //
-    transaction={editTransaction}
-    open={openForm}
-    setOpen={setOpenForm}
-/>
+                key={editTransaction?.id ?? "new-tx"} //
+                transaction={editTransaction}
+                open={openForm}
+                setOpen={setOpenForm}
+            />
         </>
     )
 }

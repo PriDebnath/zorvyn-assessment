@@ -75,7 +75,7 @@ function AddEditTransaction(props: Props) {
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
-            <DialogContent className="sm:max-w-sm">
+            <DialogContent className="">
                 <DialogHeader>
                     <DialogTitle> {transaction ? "Update" : "Add"} Transaction</DialogTitle>
                     <DialogDescription>
