@@ -1,4 +1,4 @@
-import React, {lazy, Suspense} from "react";
+import React, { lazy, Suspense } from "react";
 import { Loader } from "@/components/ui/loader";
 import { useTransactionStore } from "@/store/transaction.store";
 import Setting from "@/feature/dashboard/component/setting/setting";
@@ -26,7 +26,7 @@ export default function Dashboard() {
       title: "Overview",
       content: (
         <>
-                              <SummaryComponent transactions={transactions} />
+          <SummaryComponent transactions={transactions} />
           <VisualizationComponent transactions={transactions} />
         </>
       ),
@@ -60,9 +60,9 @@ export default function Dashboard() {
             <h2 className="text-xl font-semibold tracking-tight">
               {section.title}
             </h2>
-                                <Suspense fallback={<Loader />}>            {section.content}
+            <Suspense fallback={<Loader />}>            {section.content}
 
-</Suspense>
+            </Suspense>
           </section>
         ))}
       </main>

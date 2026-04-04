@@ -10,7 +10,7 @@ import {
 import React, { useMemo, useState } from "react"
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import {  useRoleStore } from "@/store/role.store"
+import { useRoleStore } from "@/store/role.store"
 import { mockTransactions } from "../../mock-data";
 import { PenIcon, Trash2Icon } from "lucide-react";
 import SelectTransaction from "./select-transaction";
@@ -93,52 +93,54 @@ function TransactionComponent(props: Props) {
                         No transactions found.
                     </div>
                 ) : (
-                    <table className="w-full text-sm">
-                        <thead className="bg-gray-100 dark:bg-gray-700">
-                            <tr>
-                                <th className="p-2">Date</th>
-                                <th className="p-2">Category</th>
-                                <th className="p-2">Type</th>
-                                <th className="p-2">Amount</th>
-                                {role === "admin" && <th className="p-2">Action</th>}
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {filteredTx.map((tx) => {
-                                console.log(tx);
-                                let date = new Date(tx.date)
-                                return (
-                                    <tr key={"tx" + tx.id} className="text-center border-t">
-                                        <td className="p-2">{date?.toDateString()}</td>
-                                        <td className="p-2">{tx.category}</td>
-                                        <td className="p-2">{tx.type}</td>
-                                        <td className="p-2">
-                                            {tx.type === "expense" ? "-" : "+"}{tx.amount}
-                                        </td>
-                                        {role === "admin" && (
-                                            <td className="p-2 grid grap-2">
-                                                <Button
-                                                    variant="outline"
-                                                    onClick={() => {
-                                                        setEditTransaction(tx)
-                                                        setOpenForm(true)
-                                                    }}
-                                                >
-                                                    <PenIcon />
-                                                </Button>
-                                                <Button
-                                                    variant={'outline'}
-                                                    className="text-red-500"
-                                                    onClick={() => handleDelete(tx)}
-                                                ><Trash2Icon />
-                                                </Button>
+                    <div className="w-full overflow-x-auto whitespace-nowrap">
+                        <table className="w-full text-sm">
+                            <thead className="bg-gray-100 dark:bg-gray-700">
+                                <tr>
+                                    <th className="p-2">Date</th>
+                                    <th className="p-2">Category</th>
+                                    <th className="p-2">Type</th>
+                                    <th className="p-2">Amount</th>
+                                    {role === "admin" && <th className="p-2">Action</th>}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {filteredTx.map((tx) => {
+                                    console.log(tx);
+                                    let date = new Date(tx.date)
+                                    return (
+                                        <tr key={"tx" + tx.id} className="text-center border-t">
+                                            <td className="p-2">{date?.toDateString()}</td>
+                                            <td className="p-2">{tx.category}</td>
+                                            <td className="p-2">{tx.type}</td>
+                                            <td className="p-2">
+                                                {tx.type === "expense" ? "-" : "+"}{tx.amount}
                                             </td>
-                                        )}
-                                    </tr>
-                                )
-                            })}
-                        </tbody>
-                    </table>
+                                            {role === "admin" && (
+                                                <td className="p-2 flex justify-center items-center gap-2">
+                                                    <Button
+                                                        variant="outline"
+                                                        onClick={() => {
+                                                            setEditTransaction(tx)
+                                                            setOpenForm(true)
+                                                        }}
+                                                    >
+                                                        <PenIcon />
+                                                    </Button>
+                                                    <Button
+                                                        variant={'outline'}
+                                                        className="text-red-500"
+                                                        onClick={() => handleDelete(tx)}
+                                                    ><Trash2Icon />
+                                                    </Button>
+                                                </td>
+                                            )}
+                                        </tr>
+                                    )
+                                })}
+                            </tbody>
+                        </table>
+                    </div>
                 )}
             </div>
 
