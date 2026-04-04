@@ -69,7 +69,7 @@ function TransactionComponent(props: Props) {
 
                     <Input
                         placeholder="Search category..."
-                        className="border p-2 min-w-64"
+                        className="border p-2 min-w-40"
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
                     />
@@ -113,10 +113,10 @@ function TransactionComponent(props: Props) {
                                         <td className="p-2">{tx.category}</td>
                                         <td className="p-2">{tx.type}</td>
                                         <td className="p-2">
-                                            {tx.type === "expense" ? "-" : "+"}₹{tx.amount}
+                                            {tx.type === "expense" ? "-" : "+"}{tx.amount}
                                         </td>
                                         {role === "admin" && (
-                                            <td className="p-2 space-x-2">
+                                            <td className="p-2 grid grap-2">
                                                 <Button
                                                     variant="outline"
                                                     onClick={() => {

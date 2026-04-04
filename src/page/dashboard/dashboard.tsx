@@ -1,10 +1,13 @@
-import React from "react";
+import React, {lazy, Suspense} from "react";
+import { Loader } from "@/components/ui/loader";
 import { useTransactionStore } from "@/store/transaction.store";
-import SummaryComponent from "@/feature/dashboard/component/summary/summary";
 import Setting from "@/feature/dashboard/component/setting/setting";
-import InsightsComponent from "@/feature/dashboard/component/insights/insights";
-import TransactionComponent from "@/feature/dashboard/component/transaction/transaction";
-import VisualizationComponent from "@/feature/dashboard/component/visualization/visualization";
+
+const SummaryComponent = lazy(() => import('@/feature/dashboard/component/summary/summary').then(mod => ({ default: mod.default })))
+const VisualizationComponent = lazy(() => import('@/feature/dashboard/component/visualization/visualization').then(mod => ({ default: mod.default })))
+const TransactionComponent = lazy(() => import('@/feature/dashboard/component/transaction/transaction').then(mod => ({ default: mod.default })))
+const InsightsComponent = lazy(() => import('@/feature/dashboard/component/insights/insights').then(mod => ({ default: mod.default })))
+
 
 export default function Dashboard() {
   const { transactions } = useTransactionStore();
@@ -23,7 +26,7 @@ export default function Dashboard() {
       title: "Overview",
       content: (
         <>
-          <SummaryComponent transactions={transactions} />
+                              <SummaryComponent transactions={transactions} />
           <VisualizationComponent transactions={transactions} />
         </>
       ),
@@ -43,7 +46,7 @@ export default function Dashboard() {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-950 transition-colors">
+    <div className="min-h-screen overflow-hidden flex flex-col bg-gray-50 dark:bg-gray-950 transition-colors">
       {/* Header */}
       <header className="flex justify-between items-center bg-gray-200 dark:bg-gray-900 p-3 sticky z-50 top-0 shadow-md dark:shadow-none border-b border-gray-300 dark:border-gray-800">
         <h1 className="text-lg font-semibold">Finance Dashboard</h1>
@@ -57,7 +60,9 @@ export default function Dashboard() {
             <h2 className="text-xl font-semibold tracking-tight">
               {section.title}
             </h2>
-            {section.content}
+                                <Suspense fallback={<Loader />}>            {section.content}
+
+</Suspense>
           </section>
         ))}
       </main>
